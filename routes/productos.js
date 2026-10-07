@@ -46,7 +46,51 @@ router.post('/', async (req, res) => {
     });
 }
 });
+// Servicio para actualizar un producto
+router.put('/:id', async (req, res) => {
+    try {
+        const { nombre, descripcion, cantidad, precio, ubicacion, estado } = req.body;
 
+        const productoActualizado = await Producto.findByIdAndUpdate(
+            req.params.id,
+            {
+                nombre,
+                descripcion,
+                cantidad,
+                precio,
+                ubicacion,
+                estado
+            },
+            {
+                new: true,
+                runValidators: true
+            }
+        );
+
+        if (!productoActualizado) {
+            return res.status(404).json({
+                error: 'Producto no encontrado'
+            });
+        }
+
+        res.status(200).json({
+            mensaje: 'Producto actualizado correctamente',
+            producto: productoActualizado
+        });
+
+    } catch (error) {
+        if (error.name === 'ValidationError' || error.name === 'CastError') {
+            return res.status(400).json({
+                error: 'Los datos del producto no son válidos',
+                detalles: error.message
+            });
+        }
+
+        res.status(500).json({
+            error: 'Error al actualizar el producto'
+        });
+    }
+});
 // Servicio para consultar todos los productos
 router.get('/', async (req, res) => {
     try {
@@ -87,5 +131,26 @@ router.get('/buscar/:nombre', async (req, res) => {
         });
     }
 });
+// Servicio para eliminar un producto
+router.delete('/:id', async (req, res) => {
+    try {
+        const productoEliminado = await Producto.findByIdAndDelete(req.params.id);
 
+        if (!productoEliminado) {
+            return res.status(404).json({
+                mensaje: 'Producto no encontrado'
+            });
+        }
+
+        res.status(200).json({
+            mensaje: 'Producto eliminado correctamente',
+            producto: productoEliminado
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            error: 'Error al eliminar el producto'
+        });
+    }
+});
 module.exports = router;

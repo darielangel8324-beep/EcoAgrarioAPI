@@ -1,7 +1,7 @@
 # DOCUMENTACIÓN DE LOS SERVICIOS WEB – ECOAGRARIO
 
 **Proyecto:** EcoAgrario
-**Evidencia:** GA7-220501096-AA5-EV03 – Diseño y desarrollo de servicios web
+**Evidencia:** GA7-220501096-AA5-EV04 – API del proyecto
 **Aprendiz:** Dariel Angel Verjel Martinez
 **Programa:** Análisis y Desarrollo de Software (ADSO)
 **Tecnologías:** Node.js, Express, MongoDB y Mongoose.
@@ -12,7 +12,7 @@ EcoAgrario es una aplicación orientada a facilitar la comercialización de prod
 
 Para apoyar el funcionamiento de la aplicación se desarrolló una API REST utilizando Node.js y Express, con MongoDB como sistema de almacenamiento de datos.
 
-La API permite registrar usuarios, validar el inicio de sesión, publicar productos, consultar el listado de productos y realizar búsquedas por nombre.
+La API permite registrar usuarios, validar el inicio de sesión, publicar productos, consultar productos, realizar búsquedas por nombre, actualizar productos y eliminar productos.
 
 ## 2. Servicios de autenticación
 
@@ -138,6 +138,53 @@ La API permite registrar usuarios, validar el inicio de sesión, publicar produc
 * `404 Not Found`: No se encontraron productos.
 * `500 Internal Server Error`: Error al realizar la búsqueda.
 
+### 3.4. Actualizar un producto
+
+**Método HTTP:** PUT
+**Endpoint:** `/api/productos/:id`
+**Descripción:** Permite actualizar la información de un producto existente mediante su identificador.
+
+**Datos de entrada (JSON):**
+
+```json
+{
+  "nombre": "Tomate",
+  "descripcion": "Tomate fresco actualizado",
+  "cantidad": 40,
+  "precio": 2500,
+  "ubicacion": "Ocaña, Norte de Santander",
+  "estado": "activo"
+}
+```
+
+**Validaciones:**
+
+* El producto debe existir en la base de datos.
+* La cantidad debe ser un número mayor o igual a 1.
+* El precio debe ser un número mayor o igual a 0.
+* El estado debe corresponder a uno de los valores permitidos.
+
+**Respuestas:**
+
+* `200 OK`: Producto actualizado correctamente.
+* `400 Bad Request`: Los datos del producto no son válidos.
+* `404 Not Found`: Producto no encontrado.
+* `500 Internal Server Error`: Error al actualizar el producto.
+
+### 3.5. Eliminar un producto
+
+**Método HTTP:** DELETE
+**Endpoint:** `/api/productos/:id`
+**Descripción:** Permite eliminar un producto existente mediante su identificador.
+
+**Datos de entrada:** No requiere cuerpo de solicitud.
+
+**Respuestas:**
+
+* `200 OK`: Producto eliminado correctamente.
+* `404 Not Found`: Producto no encontrado.
+* `500 Internal Server Error`: Error al eliminar el producto.
+
 ## 4. Modelo de datos
 
 ### Usuario
@@ -166,10 +213,26 @@ El modelo de producto contiene los siguientes campos:
 
 Los servicios fueron probados mediante Postman, verificando el funcionamiento de las solicitudes HTTP y las respuestas de la API.
 
-Durante las pruebas se comprobó el registro e inicio de sesión de usuarios, la publicación y consulta de productos, las búsquedas por nombre y las respuestas de validación ante solicitudes incorrectas o sin resultados.
+Durante las pruebas se comprobó:
+
+* Registro de usuarios.
+* Inicio de sesión exitoso.
+* Autenticación fallida.
+* Publicación de productos.
+* Consulta de productos.
+* Búsqueda de productos por nombre.
+* Actualización de productos.
+* Eliminación de productos.
+* Validación de datos incorrectos.
+* Respuestas cuando un usuario o producto no existe.
+* Control de registros duplicados.
+
+Entre las respuestas obtenidas durante las pruebas se verificaron códigos HTTP como `200 OK`, `201 Created`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found` y `409 Conflict`, de acuerdo con cada situación.
 
 ## 6. Conclusión
 
 El desarrollo de estos servicios web permitió establecer la comunicación entre la aplicación EcoAgrario y la base de datos MongoDB.
 
-La API proporciona las operaciones fundamentales para la gestión de usuarios y productos, facilitando la consulta y publicación de productos agropecuarios y sirviendo como base para futuras mejoras del proyecto.
+La API proporciona operaciones fundamentales para la gestión de usuarios y productos, incluyendo el registro y autenticación de usuarios, publicación, consulta, búsqueda, actualización y eliminación de productos agropecuarios.
+
+Las pruebas realizadas mediante Postman permitieron comprobar el correcto funcionamiento de los diferentes endpoints y validar las respuestas de la API ante solicitudes correctas e incorrectas.

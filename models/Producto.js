@@ -2,6 +2,17 @@ const mongoose = require('mongoose');
 
 // Definición de la estructura de los productos de EcoAgrario
 const productoSchema = new mongoose.Schema({
+    
+    nombreProductor: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    telefonoProductor: {
+        type: String,
+        required: true,
+        trim: true
+    },
     nombre: {
         type: String,
         required: true,

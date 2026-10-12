@@ -6,11 +6,26 @@ const router = express.Router();
 // Servicio para publicar un producto
 router.post('/', async (req, res) => {
     try {
-        const { nombre, descripcion, cantidad, precio, ubicacion } = req.body;
+        const {
+    nombreProductor,
+    telefonoProductor,
+    nombre,
+    descripcion,
+    cantidad,
+    precio,
+    ubicacion
+} = req.body;
 
         // Validar que todos los campos obligatorios estén presentes
-        if (!nombre || !descripcion || cantidad === undefined ||
-            precio === undefined || !ubicacion) {
+        if (
+    !nombreProductor ||
+    !telefonoProductor ||
+    !nombre ||
+    !descripcion ||
+    cantidad === undefined ||
+    precio === undefined ||
+    !ubicacion
+) {
             return res.status(400).json({
                 error: 'Todos los campos son obligatorios'
             });
@@ -18,12 +33,14 @@ router.post('/', async (req, res) => {
 
         // Crear un nuevo producto
         const nuevoProducto = new Producto({
-            nombre,
-            descripcion,
-            cantidad,
-            precio,
-            ubicacion
-        });
+    nombreProductor,
+    telefonoProductor,
+    nombre,
+    descripcion,
+    cantidad,
+    precio,
+    ubicacion
+});
 
         // Guardar el producto en MongoDB
         await nuevoProducto.save();

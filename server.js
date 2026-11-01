@@ -1,16 +1,18 @@
+﻿require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const productosRoutes = require('./routes/productos');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Permitir que la API reciba datos en formato JSON
 app.use(express.json());
 
 // Conexión con la base de datos MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/ecoagrario')
+mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log('Conexión con MongoDB establecida correctamente.');
     })
